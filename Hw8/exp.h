@@ -20,14 +20,20 @@ public:
   }
 
   string getExpressionResult() {
-    //TEST(Shell, conjunctionMatching_trueAndExp)
+    // TEST(Shell, conjunctionMatching_trueAndExp)
     if(evaluate()) {
       if( _left->symbol() == _right->symbol()) {
+              //cout<<"FFFALSE1"<<endl;
+        return "true";
+      }else if( _left->symbol() == _right->value()) {
+        //cout<<"FFFALSE2"<<endl;
         return "true";
       }
+            //cout<<"FFFALSE3"<<endl;
+            //cout<<"_left symbol = "<< _left->symbol()<<"right symbol"<< _right->symbol()<<endl;
       return _left->symbol() + " = " + _right->value();
     }
-    else {
+    else if(!evaluate()) {
       return "false";
     }
   }
@@ -53,41 +59,57 @@ public:
     //std::vector<string>::iterator s_it = _s.begin();
     //cout <<"HHHHHELO"<< endl;
     if(evaluate()){
-      //檢查vector是否為空
-      if(_s.empty()){//vector為空代表沒有塞東西
-        _s.push_back(_left->getExpressionResult());
-        output += _left->getExpressionResult();
-      }else{//vector不為空才跑for, 搜尋是否有相同的
-        isfind = false;
-        for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
-          if((*s_it) == _left->getExpressionResult()){
-            isfind = true;
-            break;
-          }
-        }
-        if(!isfind){
-            output += ", ";
-            _s.push_back(_left->getExpressionResult());
-            output += _left->getExpressionResult();
-        }
-      }
-
-      MatchExp* pm = dynamic_cast<MatchExp*>(_right);
-      if(pm){
-        isfind =  false;
-        //cout<<"dynamic true"<<endl;
-        if(_s.begin() == _s.end()) cout<<"right:sbegin == send"<<endl;
-        for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
-          if((*s_it == _right->getExpressionResult())){
-            isfind = true;
-            break;
-          }
-        }
-        if(!isfind){
-          output += ", ";
-          _s.push_back(_right->getExpressionResult());
-          output += _right->getExpressionResult();
-        }
+      // //檢查vector是否為空
+      // if(_s.empty()){//vector為空代表沒有塞東西
+      //   _s.push_back(_left->getExpressionResult());
+      //   output += _left->getExpressionResult();
+      // }else{//vector不為空才跑for, 搜尋是否有相同的
+      //   isfind = false;
+      //   for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
+      //     if((*s_it) == _left->getExpressionResult()){
+      //       isfind = true;
+      //       break;
+      //     }
+      //   }
+      //   if(!isfind){
+      //       output += ", ";
+      //       _s.push_back(_left->getExpressionResult());
+      //       output += _left->getExpressionResult();
+      //   }
+      // }
+      //
+      // MatchExp* pm = dynamic_cast<MatchExp*>(_right);
+      // if(pm){
+      //   isfind =  false;
+      //   //cout<<"dynamic true"<<endl;
+      //   if(_s.begin() == _s.end()) cout<<"right:sbegin == send"<<endl;
+      //   for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
+      //     if((*s_it == _right->getExpressionResult())){
+      //       isfind = true;
+      //       break;
+      //     }
+      //   }
+      //   if(!isfind){
+      //     output += ", ";
+      //     _s.push_back(_right->getExpressionResult());
+      //     output += _right->getExpressionResult();
+      //   }
+      // }
+      // if (_left->getExpressionResult() == "true"){
+      //   return _right->getExpressionResult();
+      // }else if (_right->getExpressionResult() == "true" || _left->getExpressionResult().find(_right->getExpressionResult()) != string::npos){
+      //   return _left->getExpressionResult();
+      // }
+      if (_left->getExpressionResult() == "false" || _right->getExpressionResult() == "false"){
+        return "false";
+      }else if (_right->getExpressionResult() == "true" || _left->getExpressionResult().find(_right->getExpressionResult()) != string::npos){
+        return _left->getExpressionResult();
+      }else if (_left->getExpressionResult() == "true" && _right->getExpressionResult() == "true"){
+        return "true";
+      }else if (_left->getExpressionResult() == "true"){
+        return _right->getExpressionResult();
+      }else{
+        return _left->getExpressionResult() + ", " + _right->getExpressionResult();
       }
       return output;// + _right->getExpressionResult();
     }
@@ -113,7 +135,16 @@ public:
   }
 
   string getExpressionResult() {
-    return "1";
+    evaluate();
+    if (_right->getExpressionResult() == "false"){
+      //cout<<"RIGHT FALSE HERE"<<endl;
+      return _left->getExpressionResult();
+    }else if (_left->getExpressionResult() == "false"){
+      //cout<<"LEFT FALSE HERE"<<endl;
+      return _right->getExpressionResult();
+    }else{
+      return _left->getExpressionResult() + "; " + _right->getExpressionResult();
+    }
   }
 
   bool evaluate() {

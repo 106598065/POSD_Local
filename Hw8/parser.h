@@ -164,9 +164,24 @@ public:
   string getExpressionResult(){
     string output;
     string temp;
-    //temp =  _expStack.top()->getExpressionResult();
     output = _expStack.top()->getExpressionResult();
+    // if(!(output == "true")){
+    //   for(int i = 0; i < output.size(); i++){
+    //     // int numofFind = output.find("true", 0);
+    //     // if(numofFind < i){
+    //     //   output.assign(temp, numofFind + 4, 3);
+    //     // }
+    //
+    //     cout <<output[i]<<endl;
+    //   }
+    //   cout<<"temp = "<<temp<<endl;
+    // }
+
     return output + ".";
+  }
+
+  string deleteTrue(){
+
   }
 
 private:

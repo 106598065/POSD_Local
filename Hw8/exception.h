@@ -1,4 +1,10 @@
+#ifndef EXCEPTION_H
+#define EXCEPTION_H
 
+#include <string>
+#include "parser.h"
+#include "scanner.h"
+using namespace std;
 /**
  *
  * Here are some examples for exception handling,
@@ -82,3 +88,4 @@ TEST(Shell, exception_UnbalancedOperator2) {
     ASSERT_EQ("Unbalanced operator", msg);
   }
 }
+#endif
