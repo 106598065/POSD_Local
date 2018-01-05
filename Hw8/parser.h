@@ -88,7 +88,7 @@ public:
   }
 
   void buildExpression(){
-    // createTerm();
+    //createTerm();
     disjunctionMatch();
     restDisjunctionMatch();
     if (createTerm() != nullptr || _currentToken != '.')

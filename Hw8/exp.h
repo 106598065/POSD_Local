@@ -3,6 +3,8 @@
 
 #include "atom.h"
 #include <vector>
+#include <iostream>
+using namespace std;
 
 class Exp {
 public:
@@ -47,30 +49,44 @@ public:
 
   string getExpressionResult() {
     string output;
-    std::vector<string>::iterator s_it = _s.begin();
+    bool inside = false;
+    //std::vector<string>::iterator s_it = _s.begin();
+    cout <<"HHHHHELO"<< endl;
     if(evaluate()){
-      // for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
-      //   if(s_it == _s.end()){
-      //     _s.push_back(_left->getExpressionResult());
-      //     output += _left->getExpressionResult();
-      //   }
-      //   if("(*s_it)" == _left->getExpressionResult()){
-      //     break;
-      //   }
-      // }
-      // MatchExp* pm = dynamic_cast<MatchExp*>(_right);
-      // if(pm){
-      //   for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
-      //     if(s_it == _s.end()){
-      //       _s.push_back(_right->getExpressionResult());
-      //       output += _right->getExpressionResult();
-      //     }
-      //     if((*s_it == _right->getExpressionResult())){
-      //       break;
-      //     }
-      //   }
-      // }
-      return "123";
+      cout <<"evaluate success"<< endl;
+      for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
+        cout <<"inside for"<< endl;
+        inside = true;
+        if(s_it == _s.end()){
+          cout <<"s_it == _s.end() success"<< endl;
+          _s.push_back(_left->getExpressionResult());
+          output += _left->getExpressionResult();
+        }
+        if("(*s_it)" == _left->getExpressionResult()){
+          break;
+        }
+      }
+      if(!inside){
+        _s.push_back(_left->getExpressionResult());
+
+        output += _left->getExpressionResult();
+        inside = false;
+      }//上面的迴圈並沒有進去, 因此會少left
+
+      MatchExp* pm = dynamic_cast<MatchExp*>(_right);
+      if(pm){
+        for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
+          if(s_it == _s.end()){
+            _s.push_back(_right->getExpressionResult());
+            output += _right->getExpressionResult();
+          }
+          if((*s_it == _right->getExpressionResult())){
+            break;
+          }
+        }
+      }
+      //return "123";
+      output += ", ";
       return output + _right->getExpressionResult();
     }
     else
@@ -84,7 +100,8 @@ public:
 private:
   Exp * _left;
   Exp * _right;
-  static std::vector<string> _s;
+  std::vector<string> _s;
+  //static std::vector<string> _s;
 };
 
 class DisjExp : public Exp {
