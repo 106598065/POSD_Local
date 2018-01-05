@@ -20,7 +20,7 @@ public:
   }
 
   string getExpressionResult() {
-
+    //TEST(Shell, conjunctionMatching_trueAndExp)
     if(evaluate()) {
       if( _left->symbol() == _right->symbol()) {
         return "true";
@@ -48,46 +48,48 @@ public:
   }
 
   string getExpressionResult() {
+    bool isfind = false;
     string output;
-    bool inside = false;
     //std::vector<string>::iterator s_it = _s.begin();
-    cout <<"HHHHHELO"<< endl;
+    //cout <<"HHHHHELO"<< endl;
     if(evaluate()){
-      cout <<"evaluate success"<< endl;
-      for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
-        cout <<"inside for"<< endl;
-        inside = true;
-        if(s_it == _s.end()){
-          cout <<"s_it == _s.end() success"<< endl;
-          _s.push_back(_left->getExpressionResult());
-          output += _left->getExpressionResult();
-        }
-        if("(*s_it)" == _left->getExpressionResult()){
-          break;
-        }
-      }
-      if(!inside){
+      //檢查vector是否為空
+      if(_s.empty()){//vector為空代表沒有塞東西
         _s.push_back(_left->getExpressionResult());
-
         output += _left->getExpressionResult();
-        inside = false;
-      }//上面的迴圈並沒有進去, 因此會少left
-
-      MatchExp* pm = dynamic_cast<MatchExp*>(_right);
-      if(pm){
+      }else{//vector不為空才跑for, 搜尋是否有相同的
+        isfind = false;
         for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
-          if(s_it == _s.end()){
-            _s.push_back(_right->getExpressionResult());
-            output += _right->getExpressionResult();
-          }
-          if((*s_it == _right->getExpressionResult())){
+          if((*s_it) == _left->getExpressionResult()){
+            isfind = true;
             break;
           }
         }
+        if(!isfind){
+            output += ", ";
+            _s.push_back(_left->getExpressionResult());
+            output += _left->getExpressionResult();
+        }
       }
-      //return "123";
-      output += ", ";
-      return output + _right->getExpressionResult();
+
+      MatchExp* pm = dynamic_cast<MatchExp*>(_right);
+      if(pm){
+        isfind =  false;
+        //cout<<"dynamic true"<<endl;
+        if(_s.begin() == _s.end()) cout<<"right:sbegin == send"<<endl;
+        for(std::vector<string>::iterator s_it = _s.begin(); s_it != _s.end(); ++s_it){
+          if((*s_it == _right->getExpressionResult())){
+            isfind = true;
+            break;
+          }
+        }
+        if(!isfind){
+          output += ", ";
+          _s.push_back(_right->getExpressionResult());
+          output += _right->getExpressionResult();
+        }
+      }
+      return output;// + _right->getExpressionResult();
     }
     else
        return "false";

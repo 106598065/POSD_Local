@@ -144,39 +144,39 @@ TEST(Shell, conjunctionMatching_sameExp) {
     FAIL() << msg;
   }
 }
-//
-// TEST(Shell, conjunctionMatching_true) {
-//   Scanner s("X=X, X=X.");
-//   Parser p(s);
-//   try {
-//     p.buildExpression();
-//
-//      /**
-//      *  maybe your implementation here.
-//      */
-//
-//     ASSERT_EQ("true.", result);
-//   } catch (std::string &msg) {
-//     FAIL() << msg;
-//   }
-// }
-//
-// TEST(Shell, conjunctionMatching_trueAndExp) {
-//   Scanner s("X=X, Y=1.");
-//   Parser p(s);
-//   try {
-//     p.buildExpression();
-//
-//      /**
-//      *  maybe your implementation here.
-//      */
-//
-//     ASSERT_EQ("Y = 1.", result);
-//   } catch (std::string &msg) {
-//     FAIL() << msg;
-//   }
-// }
-//
+
+TEST(Shell, conjunctionMatching_true) {
+  Scanner s("X=X, X=X.");
+  Parser p(s);
+  try {
+    p.buildExpression();
+
+     /**
+     *  maybe your implementation here.
+     */
+     string result = p.getExpressionResult();
+    ASSERT_EQ("true.", result);
+  } catch (std::string &msg) {
+    FAIL() << msg;
+  }
+}
+
+TEST(Shell, conjunctionMatching_trueAndExp) {
+  Scanner s("X=X, Y=1.");
+  Parser p(s);
+  try {
+    p.buildExpression();
+
+     /**
+     *  maybe your implementation here.
+     */
+    string result = p.getExpressionResult();
+    ASSERT_EQ("Y = 1.", result);
+  } catch (std::string &msg) {
+    FAIL() << msg;
+  }
+}
+
 // TEST(Shell, conjunctionMatching_expAndtrue) {
 //   Scanner s("Y=1, X=X.");
 //   Parser p(s);
@@ -186,7 +186,7 @@ TEST(Shell, conjunctionMatching_sameExp) {
 //      /**
 //      *  maybe your implementation here.
 //      */
-//
+//    string result = p.getExpressionResult();
 //     ASSERT_EQ("Y = 1.", result);
 //   } catch (std::string &msg) {
 //     FAIL() << msg;

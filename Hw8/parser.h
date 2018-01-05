@@ -122,10 +122,17 @@ public:
       if(_scanner.currentChar() == '.')
        throw string("Unexpected ',' before '.'");
       conjunctionMatch();
+      // if(_expStack.top() == "true"){
+      //   cout<<"left = true"<<endl;
+      // }
+      //cout<<_expStack.top()<<en
       Exp *right = _expStack.top();
       _expStack.pop();
       Exp *left = _expStack.top();
       _expStack.pop();
+      // if(_expStack.top() == "true"){
+      //   cout<<"left = true"<<endl;
+      // }
       _expStack.push(new ConjExp(left, right));
       restConjunctionMatch();
     }
@@ -155,7 +162,11 @@ public:
   }
 
   string getExpressionResult(){
-    return _expStack.top()->getExpressionResult() + ".";
+    string output;
+    string temp;
+    //temp =  _expStack.top()->getExpressionResult();
+    output = _expStack.top()->getExpressionResult();
+    return output + ".";
   }
 
 private:
